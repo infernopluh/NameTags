@@ -15,13 +15,12 @@ namespace NameTags
         private static readonly HashSet<string> CheatMods = new HashSet<string>
         {
             "org.iidk.gorillatag.iimenu",
-            "org.someone.gorillatag.cheatmod"
+      
         };
 
         private static readonly HashSet<string> LegalMods = new HashSet<string>
         {
-            "org.someone.gorillatag.legalmod",
-            "org.another.gorillatag.coolmod"
+        
         };
 
         void LateUpdate()
