@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Photon.Pun;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace NameTags
@@ -14,12 +15,13 @@ namespace NameTags
         private static readonly HashSet<string> CheatMods = new HashSet<string>
         {
             "org.iidk.gorillatag.iimenu",
-            
+            "org.someone.gorillatag.cheatmod"
         };
 
         private static readonly HashSet<string> LegalMods = new HashSet<string>
         {
-            "Graze.WhoIsTalking",
+            "org.someone.gorillatag.legalmod",
+            "org.another.gorillatag.coolmod"
         };
 
         void LateUpdate()
@@ -29,19 +31,19 @@ namespace NameTags
                 toStare.transform.LookAt(GorillaTagger.Instance.headCollider.transform.position);
                 text.text = GetPlayerFromVRRig(who).NickName;
 
-                string modStatus = DetectPlayerMods(who);
+                string modStatus = DetectPlayerMods();
 
                 if (modStatus == "cheat")
                 {
-                    text.color = Color.red;
+                    text.color = Color.red; // Cheat detected
                 }
                 else if (modStatus == "legal")
                 {
-                    text.color = Color.blue;
+                    text.color = Color.blue; // Legal mods detected
                 }
                 else
                 {
-                    text.color = Color.white;
+                    text.color = Color.white; // No mods detected
                 }
             }
             else
@@ -55,9 +57,9 @@ namespace NameTags
             return p.Creator;
         }
 
-        private string DetectPlayerMods(VRRig p)
+        private string DetectPlayerMods()
         {
-            List<string> mods = GetPlayerMods(p);
+            List<string> mods = GetPlayerMods();
 
             if (mods.Count == 0) return "none";
 
@@ -74,9 +76,21 @@ namespace NameTags
             return "none";
         }
 
-        private List<string> GetPlayerMods(VRRig p)
+        private List<string> GetPlayerMods()
         {
-            return new List<string>();
+            string pluginsPath = Path.Combine(Application.dataPath, "../BepInEx/plugins");
+            List<string> mods = new List<string>();
+
+            if (Directory.Exists(pluginsPath))
+            {
+                string[] pluginFiles = Directory.GetFiles(pluginsPath, "*.dll");
+                foreach (string pluginFile in pluginFiles)
+                {
+                    mods.Add(Path.GetFileNameWithoutExtension(pluginFile));
+                }
+            }
+
+            return mods;
         }
     }
 }
