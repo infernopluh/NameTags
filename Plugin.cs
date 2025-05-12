@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using System;
 using System.IO;
 using System.Reflection;
@@ -16,12 +16,12 @@ namespace NameTags
                 if (vrrig != GorillaTagger.Instance.offlineVRRig && !vrrig.headMesh.transform.Find("NameTag(Clone)"))
                 {
                     GameObject literallynametag = LoadAsset("NameTag");
-                    print(literallynametag.name);
                     literallynametag.transform.SetParent(vrrig.headMesh.transform, false);
-                    LookAt a = literallynametag.AddComponent<LookAt>();
-                    a.toStare = literallynametag.transform.Find("Canvas").gameObject;
-                    a.text = a.toStare.transform.Find("Name").gameObject.GetComponent<UnityEngine.UI.Text>();
-                    a.who = vrrig;
+
+                    LookAt lookAtComponent = literallynametag.AddComponent<LookAt>();
+                    lookAtComponent.toStare = literallynametag.transform.Find("Canvas").gameObject;
+                    lookAtComponent.text = lookAtComponent.toStare.transform.Find("Name").gameObject.GetComponent<UnityEngine.UI.Text>();
+                    lookAtComponent.who = vrrig;
                 }
             }
         }
