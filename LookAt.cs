@@ -19,7 +19,7 @@ namespace NameTags
 
         private static readonly HashSet<string> LegalMods = new HashSet<string>
         {
-            
+            "Graze.WhoIsTalking",
         };
 
         void LateUpdate()
